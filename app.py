@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from summa.summarizer import summarize
+from summa import keywords
 from flask import g, request
 
 def factory():
@@ -12,9 +13,13 @@ def factory():
 
 app = factory()
 
-@app.route('/summary')
+@app.route('/summary', methods = ['POST'])
 def summary():
     return summarize(request.data.decode('utf-8'))
+
+@app.route('/keyword', methods = ['POST'])
+def keyword():
+    return keywords.keywords(request.data.decode('utf-8'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
